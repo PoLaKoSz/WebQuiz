@@ -1,0 +1,88 @@
+<!DOCTYPE html>
+<html>
+	<head>
+		<title>Quiz</title>
+
+		<link rel="stylesheet" type="text/css" href="css/style.css">
+
+		<script src="js/core.js"></script>
+		<script src="js/questions.js"></script>
+
+		<meta charset="UTF-8">
+	</head>
+
+	<body>
+		<header>
+			<div id="container">
+				Makroökonómia Quiz
+				<progress id="progressBar" value="0" max="0"></progress>
+			</div>
+		</header>
+
+		<main>
+			<p id="questionPlaceholder"></p>
+			<form><p id="answers"></p></form>
+
+			<button id="nextButton" onClick="nextQuestionEvent()">Új kérdés</button>
+			<button id="checkButton" onClick="checkQuestionEvent()" style="display: none;">Válaszok ellenőrzése</button>
+		</main>
+
+		<footer>
+			Copyright &copy 2017 PoLáKoSz
+		</footer>
+
+		<script type="text/javascript">
+			var quiz = new Quiz(jsonQuestions['questions']);
+			var randomQuestion;
+
+			document.getElementById("progressBar").max = quiz.MaxCount;
+
+			function nextQuestionEvent() {
+				randomQuestion = quiz.getRandomQuestion();
+
+				document.getElementById("progressBar").value = quiz.MaxCount - quiz.QuestionsCount;
+
+				questionPlaceholder.innerHTML = randomQuestion.Question;
+				            answers.innerHTML = "";
+
+				for (var i = 0; i < randomQuestion.AllAnswers.length; i++) {
+					var answer = randomQuestion.getRandomAnswer();
+
+					answers.innerHTML += '<label><input type="checkbox" value="' + answer.ID + '">' + answer.Answer + "</label><br>";
+				}
+
+				if (quiz.QuestionsCount == 0) {
+					document.getElementById("nextButton").disabled = true;
+				}
+
+				document.getElementById("checkButton").style.display = 'inline';
+			}
+
+			function checkQuestionEvent() {
+				var ancestor = document.getElementById('answers');
+				var descendents = ancestor.getElementsByTagName('input');
+
+				for (var i = 0; i < descendents.length; i++) {
+					var htmlElem = descendents[i];
+					htmlElem.disabled = true;
+
+					var answerID = parseInt(htmlElem.value);
+					var isCheckedInUI = htmlElem.checked;
+
+					// if not checked in UI and not in the correct answers => true
+					// if     checked in UI and     in the correct answers => true
+					var isCorrectAnswer = ( (isCheckedInUI == false) && (randomQuestion.Correct.includes(answerID) == false) ) ||
+										  ( (isCheckedInUI && randomQuestion.Correct.includes(answerID) ));
+
+					if (isCorrectAnswer) {
+						htmlElem.parentNode.style.backgroundColor = "green";
+					} else {
+						htmlElem.parentNode.style.backgroundColor = "red";
+					}
+				}
+
+				document.getElementById("checkButton").style.display = 'none';
+			}
+		</script>
+	</body>
+</html>
