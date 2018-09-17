@@ -38,6 +38,9 @@ footer {
 	width: 100%;
 	text-align: center;
 }
+	footer a{
+		color: blue;
+	}
 
 @-webkit-keyframes move {
 	0% {background-position: 0px 0px, 0 0, 0 0}
