@@ -50,7 +50,8 @@ class Question {
 
 class Quiz {
 	constructor(quiz) {
-		this.Name   		= quiz.name;
+		this.ID             = 0;
+		this.Name           = quiz.name;
 		this.Questions      = quiz.questions;
 		this.RandomQuestion = null;
 		this.MaxCount       = this.Questions.length;
@@ -203,6 +204,8 @@ class QuizManager {
 	addQuiz(quiz) {
 		quiz.View = new QuizView(this.View.Container);
 
+		quiz.ID = this.Quizzes.length;
+
 		this.Quizzes.push(quiz);
 	}
 
@@ -222,6 +225,20 @@ class QuizManager {
 	}
 
 	/**
+	 * @param {int} id 
+	 */
+	changeQuizByID(id) {
+		for (var i = 0; i < this.Quizzes.length; i++) {
+			var quiz = this.Quizzes[i];
+
+			if (id == quiz.ID) {
+				this.changeQuiz(quiz);
+				break;
+			}
+		}
+	}
+
+	/**
 	 * @param {Quiz} quiz 
 	 */
 	updateQuizName(quiz) {
@@ -229,7 +246,7 @@ class QuizManager {
 	}
 
 	displayQuizSelector() {
-		this.View.showSelector();
+		this.View.showSelector(this.Quizzes);
 	}
 }
 
@@ -238,8 +255,12 @@ class QuizManagerView {
 		this.Container = htmlDOM;
 	}
 
-	showSelector() {
-		this.Container.innerHTML = '<p>Please select a Quiz!</p>';
+	showSelector(quizzes) {
+		for (var i = 0; i < quizzes.length; i++) {
+			var quiz = quizzes[i];
+
+			this.Container.innerHTML += '<p><a href="#" onClick="selectQuizEvent(' + quiz.ID + ');">' + quiz.Name  + '</p>';
+		}
 	}
 
 	updateQuizHeader(content) {
@@ -247,12 +268,7 @@ class QuizManagerView {
 	}
 }
 
-htmlDOM = document.getElementById('quizContainer');
-
-var quizzes = new QuizManager(htmlDOM);
-quizzes.displayQuizSelector();
-
-delete htmlDOM;
+var quizzes = new QuizManager(document.getElementById('quizContainer'));
 
 function nextQuestionEvent() {
 	quizzes.ActiveQuiz.nextQuestion();
@@ -260,4 +276,8 @@ function nextQuestionEvent() {
 
 function checkQuestionEvent() {
 	quizzes.ActiveQuiz.checkAnswers();
+}
+
+function selectQuizEvent(id) {
+	quizzes.changeQuizByID(id);
 }

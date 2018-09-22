@@ -2933,7 +2933,6 @@
 quiz = new Quiz(makro);
 
 quizzes.addQuiz(quiz);
-quizzes.changeQuiz(quiz);
 
 delete makro;
 delete quiz;
