@@ -8,12 +8,12 @@ class Answer {
 class Question {
 	constructor(question, answers, correct) {
 		this.Question      = question;
-		this.AllAnswers    = this.AddID2AllAnswers(answers);
+		this.AllAnswers    = this.generateIDs(answers);
 		this.StayedAnswers = this.AllAnswers.slice();
 		this.Correct       = correct;
 	}
 
-	AddID2AllAnswers(answers) {
+	generateIDs(answers) {
 		var tmpArr = [];
 
 		for (var i = 0; i < answers.length; i++) {						
@@ -36,17 +36,29 @@ class Question {
 	removeIndex(index) {
 		this.StayedAnswers.splice(index, 1);
 	}
+
+	shuffledAnswers() {
+		var answers = [];
+
+		while (this.StayedAnswers.length != 0) {
+			answers.push(this.getRandomAnswer());
+		}
+
+		return answers;
+	}
 }
 
 class Quiz {
-	constructor(questions) {
-		this.Questions      = questions;
+	constructor(quiz) {
+		this.Name   		= quiz.name;
+		this.Questions      = quiz.questions;
+		this.RandomQuestion = null;
 		this.MaxCount       = this.Questions.length;
 		this.QuestionsCount = this.MaxCount;
+		this.View 			= null;
 	}
 
-	getRandomQuestion()
-	{
+	getRandomQuestion() {
 		var questionIndex = Math.floor(Math.random() * this.Questions.length);
 		var      question = this.Questions[questionIndex];
 
@@ -59,56 +71,193 @@ class Quiz {
 		this.Questions.splice(index, 1);
 		this.QuestionsCount--;
 	}
-}
 
-var quiz = new Quiz(jsonQuestions['questions']);
-var randomQuestion;
+	nextQuestion() {
+		this.RandomQuestion = quizzes.ActiveQuiz.getRandomQuestion();
 
-function nextQuestionEvent() {
-	randomQuestion = quiz.getRandomQuestion();
+		this.View.updateQuestion(this.RandomQuestion.Question);
 
-	document.getElementById("progressBar").value = quiz.MaxCount - quiz.QuestionsCount;
+		var progBarValue = quizzes.ActiveQuiz.MaxCount - quizzes.ActiveQuiz.QuestionsCount;
+		this.View.updateProgressBar(progBarValue);
+		
+		this.View.updateAnswers(this.RandomQuestion.shuffledAnswers());
+		
+		if (quizzes.ActiveQuiz.QuestionsCount == 0) {
+			this.View.disableNextButton();
+		}
 
-	questionPlaceholder.innerHTML = randomQuestion.Question;
-	answers.innerHTML = "";
-
-	for (var i = 0; i < randomQuestion.AllAnswers.length; i++) {
-		var answer = randomQuestion.getRandomAnswer();
-
-		answers.innerHTML += '<label><input type="checkbox" value="' + answer.ID + '">' + answer.Answer + "</label><br>";
+		this.View.showCheckButton();
 	}
 
-	if (quiz.QuestionsCount == 0) {
-		document.getElementById("nextButton").disabled = true;
+	checkAnswers() {
+		var ancestor = this.View.AnswersDOM;
+		var descendents = ancestor.getElementsByTagName('input');
+	
+		for (var i = 0; i < descendents.length; i++) {
+			var answerDOM = descendents[i];
+			answerDOM.disabled = true;
+			
+			var answerID = parseInt(answerDOM.value);
+			var isCheckedInUI = answerDOM.checked;
+			
+			/*
+				if not checked in UI and not in the correct answers => true
+				if     checked in UI and     in the correct answers => true
+			*/
+			var isCorrectAnswer = ((isCheckedInUI == false) && (this.RandomQuestion.Correct.includes(answerID) == false)) ||
+				((isCheckedInUI && this.RandomQuestion.Correct.includes(answerID)));
+			
+			if (isCorrectAnswer) {
+				answerDOM.parentNode.style.backgroundColor = "green";
+			} else {
+				answerDOM.parentNode.style.backgroundColor = "red";
+			}
+		}
+		
+		this.View.hideCheckButton();
 	}
-
-	document.getElementById("checkButton").style.display = 'inline';
 }
 
-function checkQuestionEvent() {
-	var ancestor = document.getElementById('answers');
-	var descendents = ancestor.getElementsByTagName('input');
+class QuizView {
+	constructor(htmlDOM) {
+		this.Container    = htmlDOM;
 
-	for (var i = 0; i < descendents.length; i++) {
-		var htmlElem = descendents[i];
-		htmlElem.disabled = true;
+		this.QuestionDOM  = document.createElement("p");
+		this.AnswersDOM   = document.createElement("p");
 
-		var answerID = parseInt(htmlElem.value);
-		var isCheckedInUI = htmlElem.checked;
+		this.NextButton   = document.createElement("button");
+		this.NextButton.innerHTML = 'Következő!';
+		this.NextButton.setAttribute("onclick","nextQuestionEvent();");
 
-		/*
-			if not checked in UI and not in the correct answers => true
-			if     checked in UI and     in the correct answers => true
-		*/
-		var isCorrectAnswer = ((isCheckedInUI == false) && (randomQuestion.Correct.includes(answerID) == false)) ||
-			((isCheckedInUI && randomQuestion.Correct.includes(answerID)));
+		this.CheckButton  = document.createElement("button");
+		this.CheckButton.innerHTML = 'Ellenőrzés!';
+		this.CheckButton.setAttribute("onclick","checkQuestionEvent();");
+	}
 
-		if (isCorrectAnswer) {
-			htmlElem.parentNode.style.backgroundColor = "green";
-		} else {
-			htmlElem.parentNode.style.backgroundColor = "red";
+	show() {
+		this.Container.innerHTML = "";
+
+		this.Container.appendChild(this.QuestionDOM);
+		this.Container.appendChild(this.AnswersDOM);
+		this.Container.appendChild(this.NextButton);
+		this.Container.appendChild(this.CheckButton);
+	}
+
+	/**
+	 * @param {string} question 
+	 */
+	updateQuestion(question) {
+		this.QuestionDOM.innerText = question;
+	}
+	
+	/**
+	 * @param {int} value 
+	 */
+	updateProgressBar(value) {
+		document.getElementById("progressBar").value = value;
+	}
+	
+	/**
+	 * @param {int} value 
+	 */
+	setProgressBarMax(value) {
+		document.getElementById("progressBar").max = value;
+	}
+
+	/**
+	 * @param {Answer[]} answers 
+	 */
+	updateAnswers(answers) {
+		this.AnswersDOM.innerHTML = "";
+
+		for (var i = 0; i < answers.length; i++) {
+			var answer = answers[i];
+
+			this.AnswersDOM.innerHTML += '<label><input type="checkbox" value="' + answer.ID + '">' + answer.Answer + "</label><br>";
 		}
 	}
 
-	document.getElementById("checkButton").style.display = 'none';
+	disableNextButton() {
+		this.NextButton.disabled = true;
+	}
+
+	hideCheckButton() {
+		this.CheckButton.style.display = 'none';
+	}
+
+	showCheckButton() {
+		this.CheckButton.style.display = 'inline';
+	}
+}
+
+class QuizManager {
+	constructor(htmlDOM) {
+		this.Quizzes    = [];
+		this.ActiveQuiz = null;
+		this.View		= new QuizManagerView(htmlDOM);
+	}
+
+	/**
+	 * @param {Quiz} quiz 
+	 */
+	addQuiz(quiz) {
+		quiz.View = new QuizView(this.View.Container);
+
+		this.Quizzes.push(quiz);
+	}
+
+	/**
+	 * @param {Quiz} quiz 
+	 */
+	changeQuiz(quiz) {
+		this.ActiveQuiz = quiz;
+
+		this.ActiveQuiz.View.setProgressBarMax(this.ActiveQuiz.MaxCount);
+
+		this.updateQuizName(this.ActiveQuiz);
+
+		this.ActiveQuiz.nextQuestion();
+
+		this.ActiveQuiz.View.show();
+	}
+
+	/**
+	 * @param {Quiz} quiz 
+	 */
+	updateQuizName(quiz) {
+		this.View.updateQuizHeader(quiz.Name);
+	}
+
+	displayQuizSelector() {
+		this.View.showSelector();
+	}
+}
+
+class QuizManagerView {
+	constructor(htmlDOM) {
+		this.Container = htmlDOM;
+	}
+
+	showSelector() {
+		this.Container.innerHTML = '<p>Please select a Quiz!</p>';
+	}
+
+	updateQuizHeader(content) {
+		document.getElementById("quizName").innerHTML = content + " Quiz";
+	}
+}
+
+htmlDOM = document.getElementById('quizContainer');
+
+var quizzes = new QuizManager(htmlDOM);
+quizzes.displayQuizSelector();
+
+delete htmlDOM;
+
+function nextQuestionEvent() {
+	quizzes.ActiveQuiz.nextQuestion();
+}
+
+function checkQuestionEvent() {
+	quizzes.ActiveQuiz.checkAnswers();
 }

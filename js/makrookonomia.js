@@ -1,4 +1,5 @@
-﻿var jsonQuestions = {
+﻿makro = {
+    "name": "Makroökonómia",
     "questions": [{
             "answers": [
                 "Összevont mutatók (pl. nemzeti jövedelem, foglalkoztatottság, infláció) segítségével a  gazdaság egészének teljesítményét, állapotát, fejlődési tendenciáit elemzi.",
@@ -2928,3 +2929,11 @@
         },
     ]
 }
+
+quiz = new Quiz(makro);
+
+quizzes.addQuiz(quiz);
+quizzes.changeQuiz(quiz);
+
+delete makro;
+delete quiz;

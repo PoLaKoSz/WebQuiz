@@ -8,37 +8,28 @@
 
     <link rel="stylesheet" type="text/css" href="css/style.css">
 
-    <script src="js/questions.js"></script>
-    <script src="js/core.js"></script>
-
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
 </head>
 
 <body>
     <header>
         <div id="container">
-            Makroökonómia Quiz
-            <progress id="progressBar" value="0" max="0"></progress>
+            <div id="quizName">Kérlek válassz egy Quiz-t!</div>
+            <progress id="progressBar" value="1" max="1"></progress>
         </div>
     </header>
 
     <main>
-        <p id="questionPlaceholder"></p>
-        <form>
-            <p id="answers"></p>
-        </form>
-
-        <button id="nextButton" onClick="nextQuestionEvent()">Új kérdés</button>
-        <button id="checkButton" onClick="checkQuestionEvent()" style="display: none;">Válaszok ellenőrzése</button>
+        <div id="quizContainer"></div>
     </main>
 
     <footer>
         Hibabejelentést a <a href="mailto:polakosz@freemail.hu">polakosz@freemail.hu</a>-ra küld, vagy nyiss egy Issue-t <a href="https://github.com/PoLaKoSz/WebQuiz/issues/new" target="_blank">GitHub</a>-on kérlek!
     </footer>
 
-    <script type="text/javascript">
-        document.getElementById("progressBar").max = quiz.MaxCount;
-    </script>
+    <script src="js/core.js"></script>
+    <script src="js/makrookonomia.js"></script>
+    <script src="js/sztf1.js"></script>
 </body>
 
 </html>
