@@ -2,6 +2,9 @@ class Answer {
 	constructor(id, answer) {
 		this.ID        = id;
 		this.Answer    = answer;
+		this.IsChecked = false;
+		this.IsGood    = false;
+		this.IsWrong   = false;
 	}
 }
 
@@ -91,29 +94,26 @@ class Quiz {
 	}
 
 	checkAnswers() {
-		var ancestor = this.View.AnswersDOM;
-		var descendents = ancestor.getElementsByTagName('input');
-	
-		for (var i = 0; i < descendents.length; i++) {
-			var answerDOM = descendents[i];
-			answerDOM.disabled = true;
-			
-			var answerID = parseInt(answerDOM.value);
-			var isCheckedInUI = answerDOM.checked;
-			
-			/*
-				if not checked in UI and not in the correct answers => true
-				if     checked in UI and     in the correct answers => true
-			*/
-			var isCorrectAnswer = ((isCheckedInUI == false) && (this.RandomQuestion.Correct.includes(answerID) == false)) ||
-				((isCheckedInUI && this.RandomQuestion.Correct.includes(answerID)));
-			
-			if (isCorrectAnswer) {
-				answerDOM.parentNode.style.backgroundColor = "green";
-			} else {
-				answerDOM.parentNode.style.backgroundColor = "red";
+		var answers = this.View.getAnswers();
+		
+		for (var i = 0; i < answers.length; i++) {
+			var answer = answers[i];
+
+			if ( answer.IsChecked && this.RandomQuestion.Correct.includes(answer.ID) )
+			{
+				answer.IsGood = true;
+			}
+			else if ( answer.IsChecked && !this.RandomQuestion.Correct.includes(answer.ID) )
+			{
+				answer.IsWrong = true;
+			}
+			else if ( !answer.IsChecked && this.RandomQuestion.Correct.includes(answer.ID) )
+			{
+				answer.IsWrong = true;
 			}
 		}
+		
+		this.View.updateAnswers(answers);
 		
 		this.View.hideCheckButton();
 	}
@@ -174,8 +174,52 @@ class QuizView {
 		for (var i = 0; i < answers.length; i++) {
 			var answer = answers[i];
 
-			this.AnswersDOM.innerHTML += '<label><input type="checkbox" value="' + answer.ID + '">' + answer.Answer + "</label><br>";
+			var label = document.createElement('label');
+
+			var paragraph = document.createElement('p');
+			paragraph.className = 'answer';
+
+			if (answer.IsGood)
+				paragraph.className += ' good';
+			else if (answer.IsWrong)
+				paragraph.className += ' wrong';
+			
+			var checkBox = document.createElement("input");
+			checkBox.setAttribute("type", "checkbox");
+			checkBox.value = answer.ID;
+			checkBox.checked = answer.IsChecked;
+
+			paragraph.appendChild(checkBox);
+			paragraph.appendChild(document.createTextNode(answer.Answer));
+			
+			label.appendChild(paragraph);
+
+			this.AnswersDOM.appendChild(label);
 		}
+	}
+	
+	/**
+	 * @return {Answer[]}
+	 */
+	getAnswers() {
+		var ancestor = this.AnswersDOM;
+		var descendents = ancestor.getElementsByTagName('input');
+
+		var answers = [];
+	
+		for (var i = 0; i < descendents.length; i++) {
+			var answerDOM = descendents[i];
+			answerDOM.disabled = true;
+			
+			var answerID = parseInt(answerDOM.value);
+
+			var answer = new Answer(answerID, answerDOM.parentNode.innerText);
+			answer.IsChecked = answerDOM.checked;
+
+			answers.push(answer);
+		}
+
+		return answers;
 	}
 
 	disableNextButton() {

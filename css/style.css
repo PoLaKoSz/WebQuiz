@@ -1,4 +1,4 @@
-body{
+body {
 	margin:0;
 	padding: 0;
 }
@@ -23,7 +23,7 @@ main, div#container {
 		margin: 10px 0;
 		border-radius: 20px;
 	}
-		progress::-webkit-progress-bar  {
+		progress::-webkit-progress-bar {
 			background: #555;
 			border-radius: 20px;
 		}
@@ -33,12 +33,28 @@ main, div#container {
 			background-size: 30px 30px;
 			background-image: linear-gradient(135deg, rgba(255, 255, 255, .15) 25%, transparent 25%, transparent 50%, rgba(255, 255, 255, .15) 50%, rgba(255, 255, 255, .15) 75%, transparent 75%, transparent);
 		}
+	
+	.answer {
+		border-radius: 10px;
+		padding: 3px;
+		margin: 6px 0;
+		background: #4444441a;
+		border: 2px solid #4443;
+	}
+		.answer.good {
+			background-image: linear-gradient(to right, #0080004d, #fff 60%);
+			border-color: green;
+		}
+		.answer.wrong {
+			background-image: linear-gradient(to right, #ff00004d, #fff 60%);
+			border-color: red;
+		}
 
 footer {
 	width: 100%;
 	text-align: center;
 }
-	footer a{
+	footer a {
 		color: blue;
 	}
 
