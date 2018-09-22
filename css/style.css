@@ -51,8 +51,8 @@ main, div#container {
 		}
 
 footer {
-	width: 100%;
 	text-align: center;
+	padding: 20px;
 }
 	footer a {
 		color: blue;
