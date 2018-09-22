@@ -71,10 +71,18 @@ class Question {
 	}
 }
 
+class Module {
+	constructor() {
+		this.Modules = [];
+		this.Questions = [];
+	}
+}
+
 class Quiz {
 	constructor(quiz) {
 		this.ID             = 0;
 		this.Name           = quiz.name;
+		this.Modules		= [];
 		this.Questions      = quiz.questions;
 		this.RandomQuestion = null;
 		this.MaxCount       = this.Questions.length;
