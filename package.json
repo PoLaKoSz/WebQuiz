@@ -23,5 +23,8 @@
   "bugs": {
     "url": "https://github.com/PoLaKoSz/WebQuiz/issues"
   },
-  "homepage": "https://github.com/PoLaKoSz/WebQuiz"
+  "homepage": "https://github.com/PoLaKoSz/WebQuiz",
+  "devDependencies": {
+    "mocha": "^5.2.0"
+  }
 }
