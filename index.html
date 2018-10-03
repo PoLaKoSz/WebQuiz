@@ -28,11 +28,27 @@
     </footer>
 
     <script src="js/core.js"></script>
+    <script>
+        var quizzes = new QuizManager(document.getElementById('quizContainer'));
+    </script>
+
     <script src="js/makrookonomia.js"></script>
     <script src="js/sztf1.js"></script>
 
     <script>
         quizzes.displayQuizSelector();
+
+        function nextQuestionEvent() {
+            quizzes.ActiveQuiz.nextQuestion();
+        }
+
+        function checkQuestionEvent() {
+            quizzes.ActiveQuiz.checkAnswers();
+        }
+
+        function selectQuizEvent(id) {
+            quizzes.changeQuizByID(id);
+        }
     </script>
 </body>
 

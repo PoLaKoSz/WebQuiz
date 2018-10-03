@@ -311,17 +311,3 @@ class QuizManagerView {
 		document.getElementById("quizName").innerHTML = content + " Quiz";
 	}
 }
-
-var quizzes = new QuizManager(document.getElementById('quizContainer'));
-
-function nextQuestionEvent() {
-	quizzes.ActiveQuiz.nextQuestion();
-}
-
-function checkQuestionEvent() {
-	quizzes.ActiveQuiz.checkAnswers();
-}
-
-function selectQuizEvent(id) {
-	quizzes.changeQuizByID(id);
-}
