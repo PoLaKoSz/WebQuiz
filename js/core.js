@@ -134,7 +134,7 @@ class QuizView {
 		this.CheckButton.innerHTML = 'Ellenőrzés!';
 		this.CheckButton.setAttribute("onclick","checkQuestionEvent();");
 	}
-
+	
 	show() {
 		this.Container.innerHTML = "";
 
@@ -310,4 +310,11 @@ class QuizManagerView {
 	updateQuizHeader(content) {
 		document.getElementById("quizName").innerHTML = content + " Quiz";
 	}
+}
+
+module.exports = {
+	Answer      : Answer,
+	Question    : Question,
+	Quiz        : Quiz,
+	QuizManager : QuizManager
 }
