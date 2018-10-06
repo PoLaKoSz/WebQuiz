@@ -1,4 +1,8 @@
 class Answer {
+	/**
+	 * @param {number} id
+	 * @param {string} answer
+	 */
 	constructor(id, answer) {
 		this.ID        = id;
 		this.Answer    = answer;
@@ -9,6 +13,11 @@ class Answer {
 }
 
 class Question {
+	/**
+	 * @param {string} question
+	 * @param {string[]} answers
+	 * @param {number[]} correct
+	 */
 	constructor(question, answers, correct) {
 		this.Question      = question;
 		this.AllAnswers    = this.generateIDs(answers);
@@ -26,6 +35,9 @@ class Question {
 		return tmpArr;
 	}
 
+	/**
+	 * @returns {Answer}
+	 */
 	getRandomAnswer() {
 		var answerIndex = Math.floor(Math.random() * this.StayedAnswers.length);
 
@@ -36,10 +48,18 @@ class Question {
 		return answer;
 	}
 
+	/**
+	 * Removes the specified index from the StayedAnswers array
+	 * 
+	 * @param {number} index
+	 */
 	removeIndex(index) {
 		this.StayedAnswers.splice(index, 1);
 	}
 
+	/**
+	 * @returns {Answer[]}
+	 */
 	shuffledAnswers() {
 		var answers = [];
 
@@ -62,6 +82,9 @@ class Quiz {
 		this.View 			= null;
 	}
 
+	/**
+	 * @returns {Question}
+	 */
 	getRandomQuestion() {
 		var questionIndex = Math.floor(Math.random() * this.Questions.length);
 		var      question = this.Questions[questionIndex];
@@ -71,11 +94,19 @@ class Quiz {
 		return new Question(question['question'], question['answers'], question['correctIndexes']);
 	}
 
+	/**
+	 * Removes the specified index from the Questions array
+	 * 
+	 * @param {int} index 
+	 */
 	removeIndex(index) {
 		this.Questions.splice(index, 1);
 		this.QuestionsCount--;
 	}
 
+	/**
+	 * Pick a random Question and display it on the UI
+	 */
 	nextQuestion() {
 		this.RandomQuestion = quizzes.ActiveQuiz.getRandomQuestion();
 
@@ -93,6 +124,9 @@ class Quiz {
 		this.View.showCheckButton();
 	}
 
+	/**
+	 * Validate the User answers
+	 */
 	checkAnswers() {
 		var answers = this.View.getAnswers();
 		
@@ -135,6 +169,9 @@ class QuizView {
 		this.CheckButton.setAttribute("onclick","checkQuestionEvent();");
 	}
 	
+	/**
+	 * Display an empty quiz UI
+	 */
 	show() {
 		this.Container.innerHTML = "";
 
@@ -145,6 +182,8 @@ class QuizView {
 	}
 
 	/**
+	 * Re-draw the question on the UI
+	 * 
 	 * @param {string} question 
 	 */
 	updateQuestion(question) {
@@ -152,6 +191,8 @@ class QuizView {
 	}
 	
 	/**
+	 * Re-draw the User's progress indicator
+	 * 
 	 * @param {int} value 
 	 */
 	updateProgressBar(value) {
@@ -159,6 +200,8 @@ class QuizView {
 	}
 	
 	/**
+	 * Changes the progress indicator max value
+	 * 
 	 * @param {int} value 
 	 */
 	setProgressBarMax(value) {
@@ -166,6 +209,8 @@ class QuizView {
 	}
 
 	/**
+	 * Re-draw the answers to display the correct and bad answers
+	 * 
 	 * @param {Answer[]} answers 
 	 */
 	updateAnswers(answers) {
@@ -199,6 +244,8 @@ class QuizView {
 	}
 	
 	/**
+	 * Extract User's answer from the UI
+	 * 
 	 * @return {Answer[]}
 	 */
 	getAnswers() {
