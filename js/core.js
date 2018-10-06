@@ -134,7 +134,7 @@ class QuizView {
 		this.CheckButton.innerHTML = 'Ellenőrzés!';
 		this.CheckButton.setAttribute("onclick","checkQuestionEvent();");
 	}
-
+	
 	show() {
 		this.Container.innerHTML = "";
 
@@ -312,16 +312,9 @@ class QuizManagerView {
 	}
 }
 
-var quizzes = new QuizManager(document.getElementById('quizContainer'));
-
-function nextQuestionEvent() {
-	quizzes.ActiveQuiz.nextQuestion();
-}
-
-function checkQuestionEvent() {
-	quizzes.ActiveQuiz.checkAnswers();
-}
-
-function selectQuizEvent(id) {
-	quizzes.changeQuizByID(id);
+module.exports = {
+	Answer      : Answer,
+	Question    : Question,
+	Quiz        : Quiz,
+	QuizManager : QuizManager
 }
