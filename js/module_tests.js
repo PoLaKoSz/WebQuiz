@@ -13,11 +13,23 @@ test = {
                 0,
             ],
             "question": "Jó?",
-        }
-        ]
-    }
-    ]
-}
+        }]
+    },
+    {
+        "name": "Második fejezet",
+        "questions": [
+        {
+            "answers": [
+                "Igen",
+                "Nem",
+            ],
+            "correctIndexes": [
+                0,
+            ],
+            "question": "Jó?",
+        }]
+    }],
+};
 
 quiz = new Quiz(test);
 
