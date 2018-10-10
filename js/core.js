@@ -73,18 +73,20 @@ class Question {
 
 class Module {
 	/**
+	 * @param {string} id 
 	 * @param {Module} definition This isn't a real Module object, but it will be in the constructor
 	 */
-	constructor(definition) {
+	constructor(id, definition) {
+		this.ID = id
 		this.Name = definition.name;
 		
 		this.Modules = [];
 		this.HasModules = false;		
-		if ('modules' in definition)
-		{
-			definition.modules.forEach(element => {
-				this.Modules.push(new Module(element));
-			});
+		if ('modules' in definition) {
+			for (var i = 0; i < definition.modules.length; i++) {
+				var moduleID = this.ID + "-" + i;
+				this.Modules.push(new Module(moduleID, definition.modules[i]));
+			}
 			this.HasModules = true;
 		}
 
@@ -103,11 +105,11 @@ class Module {
 class Quiz {
 	constructor(quiz) {
 		this.ID             = 0;
-		this.MainModule		= new Module(quiz);
-		//this.Questions      = quiz.questions;
+		this.MainModule		= new Module(0, quiz);
+		this.Questions      = [];
 		this.RandomQuestion = null;
-		//this.MaxCount       = this.Questions.length;
-		//this.QuestionsCount = this.MaxCount;
+		this.MaxCount       = 0;
+		this.QuestionsCount = 0;
 		this.View 			= null;
 	}
 
@@ -334,6 +336,10 @@ class QuizManager {
 	 */
 	changeQuiz(quiz) {
 		this.ActiveQuiz = quiz;
+
+		// fill up this.ActiveQuiz.Questions array
+		this.ActiveQuiz.MaxCount = this.ActiveQuiz.Questions.length;
+		this.ActiveQuiz.QuestionsCount = this.ActiveQuiz.MaxCount;
 
 		this.ActiveQuiz.View.setProgressBarMax(this.ActiveQuiz.MaxCount);
 
