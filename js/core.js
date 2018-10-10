@@ -79,19 +79,23 @@ class Module {
 		this.Name = definition.name;
 		
 		this.Modules = [];
+		this.HasModules = false;		
 		if ('modules' in definition)
 		{
 			definition.modules.forEach(element => {
 				this.Modules.push(new Module(element));
 			});
+			this.HasModules = true;
 		}
 
 		this.Questions = [];
+		this.HasQuestions = false;
 		if ('questions' in definition)
 		{
 			definition.questions.forEach(element => {
 				this.Questions.push(new Question(element));
 			});
+			this.HasQuestions = true;
 		}
 	}
 }
@@ -99,12 +103,11 @@ class Module {
 class Quiz {
 	constructor(quiz) {
 		this.ID             = 0;
-		this.Name           = quiz.name;
-		this.Modules		= [];
-		this.Questions      = quiz.questions;
+		this.MainModule		= new Module(quiz);
+		//this.Questions      = quiz.questions;
 		this.RandomQuestion = null;
-		this.MaxCount       = this.Questions.length;
-		this.QuestionsCount = this.MaxCount;
+		//this.MaxCount       = this.Questions.length;
+		//this.QuestionsCount = this.MaxCount;
 		this.View 			= null;
 	}
 
@@ -359,7 +362,7 @@ class QuizManager {
 	 * @param {Quiz} quiz 
 	 */
 	updateQuizName(quiz) {
-		this.View.updateQuizHeader(quiz.Name);
+		this.View.updateQuizHeader(quiz.MainModule.Name);
 	}
 
 	displayQuizSelector() {
@@ -376,7 +379,7 @@ class QuizManagerView {
 		for (var i = 0; i < quizzes.length; i++) {
 			var quiz = quizzes[i];
 
-			this.Container.innerHTML += '<p><a href="#" onClick="selectQuizEvent(' + quiz.ID + ');">' + quiz.Name  + '</p>';
+			this.Container.innerHTML += '<p><a href="#" onClick="selectQuizEvent(' + quiz.ID + ');">' + quiz.MainModule.Name  + '</p>';
 		}
 	}
 
