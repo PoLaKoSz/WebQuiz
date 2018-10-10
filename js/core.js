@@ -72,9 +72,27 @@ class Question {
 }
 
 class Module {
-	constructor() {
+	/**
+	 * @param {Module} definition This isn't a real Module object, but it will be in the constructor
+	 */
+	constructor(definition) {
+		this.Name = definition.name;
+		
 		this.Modules = [];
+		if ('modules' in definition)
+		{
+			definition.modules.forEach(element => {
+				this.Modules.push(new Module(element));
+			});
+		}
+
 		this.Questions = [];
+		if ('questions' in definition)
+		{
+			definition.questions.forEach(element => {
+				this.Questions.push(new Question(element));
+			});
+		}
 	}
 }
 

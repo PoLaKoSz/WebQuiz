@@ -1,39 +1,61 @@
 test = {
-    "name": "Module test",
+    "name": "Makroökonómia",
     "modules": [
     {
-        "name": "Első fejezet",
-        "questions": [
+        "name": "Alapfogalmak",
+        "modules": [
         {
-            "answers": [
-                "Igen",
-                "Nem",
-            ],
-            "correctIndexes": [
-                0,
-            ],
-            "question": "Jó?",
-        }]
-    },
-    {
-        "name": "Második fejezet",
-        "questions": [
+            "name": "Háztartások",
+            "modules": [
+            {
+                "name": "Hazai",
+                "questions": [
+                {
+                    "answers": [
+                        "Igen",
+                        "Nem",
+                    ],
+                    "correctIndexes": [
+                        0,
+                    ],
+                    "question": "Jó?",
+                }]
+            },
+            {
+                "name": "Külföldi",
+                "questions": [
+                {
+                    "answers": [
+                        "Igen",
+                        "Nem",
+                    ],
+                    "correctIndexes": [
+                        0,
+                    ],
+                    "question": "Jó?",
+                }]
+            }],
+        },
         {
-            "answers": [
-                "Igen",
-                "Nem",
-            ],
-            "correctIndexes": [
-                0,
-            ],
-            "question": "Jó?",
+            "name": "Vállalatok",
+            "questions": [
+            {
+                "answers": [
+                    "Igen",
+                    "Nem",
+                ],
+                "correctIndexes": [
+                    0,
+                ],
+                "question": "Jó?",
+            }]
         }]
-    }],
+    }]
 };
 
 quiz = new Quiz(test);
 
 quizzes.addQuiz(quiz);
 
-delete test;
+//delete test;
 delete quiz;
