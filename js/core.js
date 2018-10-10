@@ -95,7 +95,7 @@ class Module {
 		if ('questions' in definition)
 		{
 			definition.questions.forEach(element => {
-				this.Questions.push(new Question(element));
+				this.Questions.push(new Question(element.question, element.answers, element.correctIndexes));
 			});
 			this.HasQuestions = true;
 		}
