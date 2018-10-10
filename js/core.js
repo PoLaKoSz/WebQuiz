@@ -81,7 +81,7 @@ class Module {
 		this.Name = definition.name;
 		
 		this.Modules = [];
-		this.HasModules = false;		
+		this.HasModules = false;
 		if ('modules' in definition) {
 			for (var i = 0; i < definition.modules.length; i++) {
 				var moduleID = this.ID + "-" + i;
