@@ -388,7 +388,7 @@ class QuizManagerView {
 	}
 
 	recursiveModuleDisplay(quizModule) {
-		var html = '<div class=module><label class="moduleName moduleCheckBoxContainer"><input type=checkbox><span class=checkmark></span>' + quizModule.Name  + ' (ID: ' + quizModule.ID + ')</label>';
+		var html = '<div class=module><div class=moduleName-bg></div><div style="position:absolute;top:8px;"><label class="moduleName moduleCheckBoxContainer"><input type=checkbox><span class=checkmark></span>' + quizModule.Name  + ' (ID: ' + quizModule.ID + ')</label></div>';
 
 		if (quizModule.HasModules) {
 			for (var i = 0; i < quizModule.Modules.length; i++) {
