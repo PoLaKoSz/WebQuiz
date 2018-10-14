@@ -1,54 +1,36 @@
 test = {
-    "name": "Makroökonómia",
+    "name": "Matematika",
     "modules": [
     {
-        "name": "Alapfogalmak",
+        "name": "DiMat",
         "modules": [
         {
-            "name": "Háztartások",
+            "name": "Vektorok",
             "modules": [
             {
-                "name": "Hazai",
-                "questions": [
-                {
-                    "answers": [
-                        "Igen",
-                        "Nem",
-                    ],
-                    "correctIndexes": [
-                        0,
-                    ],
-                    "question": "Jó?",
-                }]
+                "name": "Nullvektorok",
+                "questions": []
             },
             {
-                "name": "Külföldi",
-                "questions": [
-                {
-                    "answers": [
-                        "Igen",
-                        "Nem",
-                    ],
-                    "correctIndexes": [
-                        0,
-                    ],
-                    "question": "Jó?",
-                }]
+                "name": "Helyvektorok",
+                "questions": []
             }],
-        },
+        }]
+    },
+    {
+        "name": "Analízis",
+        "modules": [
         {
-            "name": "Vállalatok",
-            "questions": [
+            "name": "Komplex számok",
+            "modules": [
             {
-                "answers": [
-                    "Igen",
-                    "Nem",
-                ],
-                "correctIndexes": [
-                    0,
-                ],
-                "question": "Jó?",
-            }]
+                "name": "Beveztés",
+                "questions": []
+            },
+            {
+                "name": "Példák",
+                "questions": []
+            }],
         }]
     }]
 };
@@ -57,5 +39,5 @@ quiz = new Quiz(test);
 
 quizzes.addQuiz(quiz);
 
-//delete test;
+delete test;
 delete quiz;

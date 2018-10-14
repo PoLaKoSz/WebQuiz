@@ -383,10 +383,26 @@ class QuizManagerView {
 
 	showSelector(quizzes) {
 		for (var i = 0; i < quizzes.length; i++) {
-			var quiz = quizzes[i];
-
-			this.Container.innerHTML += '<p><a href="#" onClick="selectQuizEvent(' + quiz.ID + ');">' + quiz.MainModule.Name  + '</p>';
+			this.recursiveModuleDisplay(quizzes[i].MainModule);
 		}
+	}
+
+	recursiveModuleDisplay(quizModule) {
+		this.Container.innerHTML += '<div style="margin-left:10px;"><a href="#">' + quizModule.Name  + ' (ID: ' + quizModule.ID + ')</a>';
+
+		console.log('BEGINNING OF ' + quizModule.Name);
+
+		if (quizModule.HasModules) {
+			//console.log(quizModule.Name + ' has ' + quizModule.Modules.length + ' module.');
+
+			for (var i = 0; i < quizModule.Modules.length; i++) {
+				this.recursiveModuleDisplay(quizModule.Modules[i]);
+			}
+		}
+
+		//this.Container.innerHTML += '</div>';
+
+		console.log('END OF ' + quizModule.Name);
 	}
 
 	updateQuizHeader(content) {
