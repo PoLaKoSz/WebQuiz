@@ -383,26 +383,20 @@ class QuizManagerView {
 
 	showSelector(quizzes) {
 		for (var i = 0; i < quizzes.length; i++) {
-			this.recursiveModuleDisplay(quizzes[i].MainModule);
+			this.Container.innerHTML += this.recursiveModuleDisplay(quizzes[i].MainModule);
 		}
 	}
 
 	recursiveModuleDisplay(quizModule) {
-		this.Container.innerHTML += '<div style="margin-left:10px;"><a href="#">' + quizModule.Name  + ' (ID: ' + quizModule.ID + ')</a>';
-
-		console.log('BEGINNING OF ' + quizModule.Name);
+		var html = '<div style="margin-left:10px;"><a href="#">' + quizModule.Name  + ' (ID: ' + quizModule.ID + ')</a>';
 
 		if (quizModule.HasModules) {
-			//console.log(quizModule.Name + ' has ' + quizModule.Modules.length + ' module.');
-
 			for (var i = 0; i < quizModule.Modules.length; i++) {
-				this.recursiveModuleDisplay(quizModule.Modules[i]);
+				html += this.recursiveModuleDisplay(quizModule.Modules[i]);
 			}
 		}
 
-		//this.Container.innerHTML += '</div>';
-
-		console.log('END OF ' + quizModule.Name);
+		return html += '</div>';
 	}
 
 	updateQuizHeader(content) {
