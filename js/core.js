@@ -405,7 +405,7 @@ class QuizManagerView {
 	}
 
 	recursiveModuleDisplay(quizModule) {
-		var html = '<div class=module><div class=moduleName-height-fix><div class=moduleName-bg></div><div class=moduleName-container><label class="moduleCheckBoxContainer" onClick=quizzes.moduleSelectionChangedWithID("' + quizModule.ID + '");><input type=checkbox><span class=checkmark></span><span class=moduleName-vertical-center>' + quizModule.Name  + ' (ID: ' + quizModule.ID + ')</span></label></div></div>';
+		var html = '<div class=module><div class=moduleName-height-fix><div class=moduleName-bg></div><div class=moduleName-container><label class="moduleCheckBoxContainer"><input type=checkbox onClick=quizzes.moduleSelectionChangedWithID("' + quizModule.ID + '");><span class=checkmark></span><span class=moduleName-vertical-center>' + quizModule.Name  + ' (ID: ' + quizModule.ID + ')</span></label></div></div>';
 
 		if (quizModule.HasModules) {
 			for (var i = 0; i < quizModule.Modules.length; i++) {
