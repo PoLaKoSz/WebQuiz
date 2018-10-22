@@ -425,6 +425,12 @@ class QuizManagerView {
 		for (var i = 0; i < quizzes.length; i++) {
 			this.Container.appendChild(this.recursiveModuleDisplay(quizzes[i].MainModule));
 		}
+
+		var startButton = document.createElement("button");
+		startButton.innerHTML = 'Kvíz indítása';
+		startButton.setAttribute("onclick","quizzes.startQuiz();");
+
+		this.Container.appendChild(startButton);
 	}
 
 	/**
