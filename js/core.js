@@ -79,6 +79,7 @@ class Module {
 	constructor(id, definition) {
 		this.ID = id
 		this.Name = definition.name;
+		this.IsChecked = false;
 		
 		this.Modules = [];
 		this.HasModules = false;
@@ -376,7 +377,9 @@ class QuizManager {
 	}
 
 	/**
-	 * @param {string} id 
+	 * Handle when {Module}s gets selected/deselected on the UI
+	 * 
+	 * @param {string} id unique number for a specific Module
 	 */
 	moduleSelectionChangedWithID(id) {
 		var idArray = id.split('-');
@@ -387,9 +390,27 @@ class QuizManager {
 			activeModule = activeModule.Modules[idArray[i]];
 		}
 
-		console.log(activeModule);
+		var isChecked = document.getElementById(id).checked;
 
-		// set every submodule according to the selection
+		this.updateChildModules(activeModule, isChecked);
+
+		this.displayQuizSelector();
+	}
+
+	/**
+	 * Change recursively the children modules IsChecked property
+	 * 
+	 * @param {Module} quizModule current root module
+	 * @param {bool} isChecked new value
+	 */
+	updateChildModules(quizModule, isChecked) {
+		quizModule.IsChecked = isChecked;
+
+		if (quizModule.HasModules) {
+			for (var i = 0; i < quizModule.Modules.length; i++) {
+				this.updateChildModules(quizModule.Modules[i], isChecked);
+			}
+		}
 	}
 }
 
