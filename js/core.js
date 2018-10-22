@@ -378,8 +378,8 @@ class QuizManager {
 	/**
 	 * @param {string} id 
 	 */
-	moduleSelectionChangedWithID(asdasdasd) {
-		var idArray = asdasdasd.split('-');
+	moduleSelectionChangedWithID(id) {
+		var idArray = id.split('-');
 
 		var activeModule = this.Quizzes[idArray[0]].MainModule;
 
@@ -405,7 +405,17 @@ class QuizManagerView {
 	}
 
 	recursiveModuleDisplay(quizModule) {
-		var html = '<div class=module><div class=moduleName-height-fix><div class=moduleName-bg></div><div class=moduleName-container><label class="moduleCheckBoxContainer"><input type=checkbox onClick=quizzes.moduleSelectionChangedWithID("' + quizModule.ID + '");><span class=checkmark></span><span class=moduleName-vertical-center>' + quizModule.Name  + ' (ID: ' + quizModule.ID + ')</span></label></div></div>';
+		var html = '<div class=module>' +
+						'<div class=moduleName-height-fix>' +
+							'<div class=moduleName-bg></div>' +
+							'<div class=moduleName-container>' + 
+								'<label class="moduleCheckBoxContainer">' + 
+									'<input type=checkbox onClick=quizzes.moduleSelectionChangedWithID("' + quizModule.ID + '");>' +
+									'<span class=checkmark></span>' +
+									'<span class=moduleName-vertical-center>' + quizModule.Name  + ' (ID: ' + quizModule.ID + ')</span>' +
+								'</label>' +
+							'</div>' +
+						'</div>';
 
 		if (quizModule.HasModules) {
 			for (var i = 0; i < quizModule.Modules.length; i++) {
