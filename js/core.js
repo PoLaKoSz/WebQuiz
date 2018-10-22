@@ -399,31 +399,59 @@ class QuizManagerView {
 	}
 
 	showSelector(quizzes) {
+		this.Container.innerHTML = "";
+
 		for (var i = 0; i < quizzes.length; i++) {
-			this.Container.innerHTML += this.recursiveModuleDisplay(quizzes[i].MainModule);
+			this.Container.appendChild(this.recursiveModuleDisplay(quizzes[i].MainModule));
 		}
 	}
 
+	/**
+	 * @returns {asdasd}
+	 */
 	recursiveModuleDisplay(quizModule) {
-		var html = '<div class=module>' +
-						'<div class=moduleName-height-fix>' +
-							'<div class=moduleName-bg></div>' +
-							'<div class=moduleName-container>' + 
-								'<label class="moduleCheckBoxContainer">' + 
-									'<input type=checkbox onClick=quizzes.moduleSelectionChangedWithID("' + quizModule.ID + '");>' +
-									'<span class=checkmark></span>' +
-									'<span class=moduleName-vertical-center>' + quizModule.Name  + ' (ID: ' + quizModule.ID + ')</span>' +
-								'</label>' +
-							'</div>' +
-						'</div>';
+						var moduleName = document.createElement('span');
+						moduleName.className = 'moduleName-vertical-center';
+						moduleName.innerText = quizModule.Name  + ' (ID: ' + quizModule.ID + ')';
+
+						var realChechBox = document.createElement('span');
+						realChechBox.className = 'checkmark';
+
+						var checkBox = document.createElement('input');
+						checkBox.type = 'checkbox';
+						checkBox.id = quizModule.ID;
+						checkBox.checked = quizModule.IsChecked;
+						checkBox.setAttribute('onclick','quizzes.moduleSelectionChangedWithID("' + quizModule.ID + '");');
+
+					var moduleCheckBoxContainerNode = document.createElement('label');
+					moduleCheckBoxContainerNode.className = 'moduleCheckBoxContainer';
+					moduleCheckBoxContainerNode.appendChild(checkBox);
+					moduleCheckBoxContainerNode.appendChild(realChechBox);
+					moduleCheckBoxContainerNode.appendChild(moduleName);
+
+				var moduleNameContainerNode = document.createElement('div');
+				moduleNameContainerNode.className = 'moduleName-container';
+				moduleNameContainerNode.appendChild(moduleCheckBoxContainerNode);
+
+				var moduleNameBgNode = document.createElement('div');
+				moduleNameBgNode.className = 'moduleName-bg';
+
+			var moduleHeightFixNode = document.createElement('div');
+			moduleHeightFixNode.className = 'moduleName-height-fix';
+			moduleHeightFixNode.appendChild(moduleNameBgNode);
+			moduleHeightFixNode.appendChild(moduleNameContainerNode);
+
+		var moduleNode = document.createElement('div');
+		moduleNode.className = 'module';
+		moduleNode.appendChild(moduleHeightFixNode);
 
 		if (quizModule.HasModules) {
 			for (var i = 0; i < quizModule.Modules.length; i++) {
-				html += this.recursiveModuleDisplay(quizModule.Modules[i]);
+				moduleNode.appendChild(this.recursiveModuleDisplay(quizModule.Modules[i]));
 			}
 		}
 
-		return html += '</div>';
+		return moduleNode;
 	}
 
 	updateQuizHeader(content) {
