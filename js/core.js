@@ -383,10 +383,20 @@ class QuizManagerView {
 
 	showSelector(quizzes) {
 		for (var i = 0; i < quizzes.length; i++) {
-			var quiz = quizzes[i];
-
-			this.Container.innerHTML += '<p><a href="#" onClick="selectQuizEvent(' + quiz.ID + ');">' + quiz.MainModule.Name  + '</p>';
+			this.Container.innerHTML += this.recursiveModuleDisplay(quizzes[i].MainModule);
 		}
+	}
+
+	recursiveModuleDisplay(quizModule) {
+		var html = '<div class=module><div class=moduleName-height-fix><div class=moduleName-bg></div><div class=moduleName-container><label class="moduleCheckBoxContainer"><input type=checkbox><span class=checkmark></span><span class=moduleName-vertical-center>' + quizModule.Name  + ' (ID: ' + quizModule.ID + ')</span></label></div></div>';
+
+		if (quizModule.HasModules) {
+			for (var i = 0; i < quizModule.Modules.length; i++) {
+				html += this.recursiveModuleDisplay(quizModule.Modules[i]);
+			}
+		}
+
+		return html += '</div>';
 	}
 
 	updateQuizHeader(content) {
