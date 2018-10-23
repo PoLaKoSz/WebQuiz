@@ -401,7 +401,7 @@ class QuizManager {
 	 * Change recursively the children modules IsChecked property
 	 * 
 	 * @param {Module} quizModule current root module
-	 * @param {bool} isChecked new value
+	 * @param {bool}   isChecked  new value
 	 */
 	updateChildModules(quizModule, isChecked) {
 		quizModule.IsChecked = isChecked;
