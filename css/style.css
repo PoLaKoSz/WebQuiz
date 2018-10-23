@@ -19,6 +19,10 @@ main, div#container {
 	margin: auto;
 	max-width: 80%;
 }
+
+#quizContainer {
+	width: 100%;
+}
 	progress {
 		-webkit-appearance: none;
 		-ms-appearance: none;
@@ -76,7 +80,8 @@ a {
 .module {
 	margin: 10px 0 0 30px;
 	position: relative;
-	width: 100%;
+	width: -moz-fit-content;
+	width: fit-content;
 }
 	.moduleName-height-fix,
 	.moduleName-bg {
