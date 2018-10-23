@@ -129,7 +129,7 @@ class Quiz {
 	 * @param {Module} quizModule 
 	 */
 	readModule(quizModule) {
-		if (quizModule.HasModules && quizModule.IsChecked) {
+		if (quizModule.HasModules) {
 			for (var i = 0; i < quizModule.Modules.length; i++) {
 				this.readModule(quizModule.Modules[i]);
 			}
@@ -363,10 +363,13 @@ class QuizManager {
 		this.ActiveQuiz = new Quiz({ 'name' : 'tmp'});
 		this.ActiveQuiz.View = new QuizView(this.View.Container);
 
-		var idx = 0;
-		while (idx < this.Quizzes.length && 0 < this.ActiveQuiz.Questions.length) {
+		var i = 0;
+		while (i < this.Quizzes.length && this.ActiveQuiz.Questions.length == 0) {
+			this.Quizzes[i].setQuestions();
+
 			this.ActiveQuiz.Questions = this.ActiveQuiz.Questions.concat(this.Quizzes[i].Questions);
-			idx++;
+			
+			i++;
 		}
 
 		// fill up this.ActiveQuiz.Questions array

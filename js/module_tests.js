@@ -9,11 +9,33 @@ test = {
             "modules": [
             {
                 "name": "Nullvektorok",
-                "questions": []
+                "questions": [
+                    {
+                        "answers": [
+                            "Jó",
+                            "Rossz",
+                        ],
+                        "correctIndexes": [
+                            0,
+                        ],
+                        "question": "Milyen a nullvektor?",
+                    }
+                    ]
             },
             {
                 "name": "Helyvektorok",
-                "questions": []
+                "questions": [
+                {
+                    "answers": [
+                        "Igen",
+                        "Nem",
+                    ],
+                    "correctIndexes": [
+                        0,
+                    ],
+                    "question": "Milyen a helyvektor?",
+                }
+                ]
             }],
         }]
     },
@@ -25,11 +47,33 @@ test = {
             "modules": [
             {
                 "name": "Beveztés",
-                "questions": []
+                "questions": [
+                    {
+                        "answers": [
+                            "Igen",
+                            "Nem",
+                        ],
+                        "correctIndexes": [
+                            0,
+                        ],
+                        "question": "Milyen a bevezetés?",
+                    }
+                    ]
             },
             {
                 "name": "Példák",
-                "questions": []
+                "questions": [
+                    {
+                        "answers": [
+                            "Jók",
+                            "Rosszak",
+                        ],
+                        "correctIndexes": [
+                            0,
+                        ],
+                        "question": "Milyek a példák?",
+                    }
+                    ]
             }],
         }]
     }]
