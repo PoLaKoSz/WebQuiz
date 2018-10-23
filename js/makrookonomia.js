@@ -2,64 +2,8 @@
     "name": "Makroökonómia",
     "modules": [
     {
-        "name": "Összevont",
+        "name": "Fejetlenség",
         "questions": [
-        {
-            "answers": [
-                "Összevont mutatók (pl. nemzeti jövedelem, foglalkoztatottság, infláció) segítségével a  gazdaság egészének teljesítményét, állapotát, fejlődési tendenciáit elemzi.",
-                "Az egymástól elkülönült piaci szereplők (emberek, háztartások, vállalatok) racionálisnak  feltételezett döntéseit vizsgálja.",
-            ],
-            "correctIndexes": [
-                0,
-            ],
-            "question": "Mivel foglalkozik a Makroökonómia?",
-        },
-        {
-            "answers": [
-                "Összevont mutatók (pl. nemzeti jövedelem, foglalkoztatottság, infláció) segítségével a  gazdaság egészének teljesítményét, állapotát, fejlődési tendenciáit elemzi.",
-                "Az egymástól elkülönült piaci szereplők (emberek, háztartások, vállalatok) racionálisnak  feltételezett döntéseit vizsgálja.",
-            ],
-            "correctIndexes": [
-                1,
-            ],
-            "question": "Mivel foglalkozik a Mikroökonómia?",
-        },
-        {
-            "answers": [
-                "Q",
-                "I",
-                "E",
-                "Y",
-            ],
-            "correctIndexes": [
-                0,
-            ],
-            "question": "Mi a Kibocsátás jele?",
-        },
-        {
-            "answers": [
-                "C",
-                "Q",
-                "W",
-                "A",
-            ],
-            "correctIndexes": [
-                0,
-            ],
-            "question": "Mi a Fogyasztás jele?",
-        },
-        {
-            "answers": [
-                "S",
-                "W",
-                "A",
-                "K",
-            ],
-            "correctIndexes": [
-                0,
-            ],
-            "question": "Mi a Megtakarítás jele?",
-        },
         {
             "answers": [
                 "A pénzintézetek a náluk elhelyezett megtakarítás után kamatot fizetnek.",
@@ -114,11 +58,75 @@
             ],
             "question": "Mennyi lesz a Reálkamat értéke? 6%-os kamat és 4%-os infláció.",
         },
+        ]
+    },
+    {
+        "name": "A makrogazdaság szereplői, alapfogalmak",
+        "questions": [
+        {
+            "answers": [
+                "Összevont mutatók (pl. nemzeti jövedelem, foglalkoztatottság, infláció) segítségével a  gazdaság egészének teljesítményét, állapotát, fejlődési tendenciáit elemzi.",
+                "Az egymástól elkülönült piaci szereplők (emberek, háztartások, vállalatok) racionálisnak  feltételezett döntéseit vizsgálja.",
+            ],
+            "correctIndexes": [
+                0,
+            ],
+            "question": "Mivel foglalkozik a Makroökonómia?",
+        },
+        {
+            "answers": [
+                "Összevont mutatók (pl. nemzeti jövedelem, foglalkoztatottság, infláció) segítségével a  gazdaság egészének teljesítményét, állapotát, fejlődési tendenciáit elemzi.",
+                "Az egymástól elkülönült piaci szereplők (emberek, háztartások, vállalatok) racionálisnak  feltételezett döntéseit vizsgálja.",
+            ],
+            "correctIndexes": [
+                1,
+            ],
+            "question": "Mivel foglalkozik a Mikroökonómia?",
+        },
+        {
+            "answers": [
+                "C",
+                "Q",
+                "W",
+                "A",
+            ],
+            "correctIndexes": [
+                0,
+            ],
+            "question": "Mi a Fogyasztás jele?",
+        },
+        {
+            "answers": [
+                "S",
+                "W",
+                "A",
+                "K",
+            ],
+            "correctIndexes": [
+                0,
+            ],
+            "question": "Mi a Megtakarítás jele?",
+        },
+        {
+            "answers": [
+                "Q",
+                "I",
+                "E",
+                "Y",
+            ],
+            "correctIndexes": [
+                0,
+            ],
+            "question": "Mi a Kibocsátás jele?",
+        }]
+    },
+    {
+        "name": "Jövedelem-áramlásoka folyótétel számlákon",
+        "questions": [
         {
             "answers": [
                 "Tartozik számlakar (= kiadás)",
                 "Követel számlakar (= bevétel)",
-                "Akasztófa? :O",
             ],
             "correctIndexes": [
                 0,
@@ -129,7 +137,6 @@
             "answers": [
                 "Követel számlakar (= bevétel)",
                 "Tartozik számlakar (= kiadás)",
-                "Akasztófa? :O",
             ],
             "correctIndexes": [
                 0,
@@ -438,7 +445,12 @@
                 1,
             ],
             "question": "Mivel egyenlő a Hazai Össztermék?",
-        },
+        }
+        ]
+    },
+    {
+        "name": "A makrogazdaság teljesítményének mérése",
+        "questions": [
         {
             "answers": [
                 "Szürkegazdaság.",
@@ -1139,7 +1151,12 @@
                 1,
             ],
             "question": "Mely képlet tartozik az IV. modellhez (Külföldi szektor)?",
-        },
+        }
+        ]
+    },
+    {
+        "name" : "A makrogazdaság piacai",
+        "questions" : [
         {
             "answers": [
                 "Fogyasztási javak piaca",
@@ -1171,7 +1188,7 @@
                 "Háztartási szféra (C)",
                 "Vállalati szféra (I)",
                 "Állam (G)",
-                "Külföld (X - IM)",
+                   "Külföld (X - IM)",
             ],
             "correctIndexes": [
                 0,
@@ -1214,7 +1231,12 @@
                 0,
             ],
             "question": "Mi az Árupiaci kínálat rövidítése?",
-        },
+        }
+        ],
+    },
+    {
+        "name" : "Az árupiaci kereslet összetevői",
+        "questions" : [
         {
             "answers": [
                 "C(Y) = C0 + ĉY",
@@ -1828,7 +1850,12 @@
                 0,
             ],
             "question": "Mi az árszínvonal jele?",
-        },
+        }
+        ]
+    },
+    {
+        "name" : "Pénzpiac",
+        "questions" : [
         {
             "answers": [
                 "... a reál pénzkínálat (MS / P) csökken",
@@ -1935,7 +1962,12 @@
                 0,
             ],
             "question": "Mi az árupiaci kereslet?",
-        },
+        }
+        ]
+    },
+    {
+        "name" : "Az árupiaci kínálat",
+        "questions" : [
         {
             "answers": [
                 "L(labour)",
@@ -2161,7 +2193,11 @@
                 1,
             ],
             "question": "Mi növeli az árupiaci kínálatot hosszútávon?",
-        },
+        }]
+    },
+    {
+        "name" : "Munkapiac",
+        "questions" : [
         {
             "answers": [
                 "L^D",
@@ -2568,7 +2604,11 @@
                 0,
             ],
             "question": "Veszélyes állapot-e a tartós munkanélküliség?",
-        },
+        }]
+    },
+    {
+        "name" : "Makrogazdasági egyensúly",
+        "questions" : [
         {
             "answers": [
                 "Az árszínvonal tartós emelkedését",
