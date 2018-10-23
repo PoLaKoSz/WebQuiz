@@ -104,9 +104,13 @@ class Module {
 }
 
 class Quiz {
-	constructor(quiz) {
+	/**
+	 * @param {number} id 
+	 * @param {Object} quiz 
+	 */
+	constructor(id, quiz) {
 		this.ID             = 0;
-		this.MainModule		= new Module(0, quiz);
+		this.MainModule		= new Module(id, quiz);
 		this.Questions      = [];
 		this.RandomQuestion = null;
 		this.MaxCount       = 0;
@@ -349,9 +353,11 @@ class QuizManager {
 	}
 
 	/**
-	 * @param {Quiz} quiz 
+	 * @param {Object} quiz 
 	 */
 	addQuiz(quiz) {
+		quiz = new Quiz(this.Quizzes.length, quiz);
+
 		quiz.View = new QuizView(this.View.Container);
 
 		quiz.MainModule.ID = this.Quizzes.length;
@@ -360,7 +366,7 @@ class QuizManager {
 	}
 
 	startQuiz() {
-		this.ActiveQuiz = new Quiz({ 'name' : 'tmp'});
+		this.ActiveQuiz = new Quiz(0, { 'name' : 'tmp'});
 		this.ActiveQuiz.View = new QuizView(this.View.Container);
 
 		var i = 0;
@@ -368,6 +374,7 @@ class QuizManager {
 			this.Quizzes[i].setQuestions();
 
 			this.ActiveQuiz.Questions = this.ActiveQuiz.Questions.concat(this.Quizzes[i].Questions);
+			this.ActiveQuiz.MainModule.Name = this.Quizzes[i].MainModule.Name;
 			
 			i++;
 		}

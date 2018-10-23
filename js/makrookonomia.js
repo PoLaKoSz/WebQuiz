@@ -2936,9 +2936,6 @@
     ]
 };
 
-quiz = new Quiz(makro);
-
-quizzes.addQuiz(quiz);
+quizzes.addQuiz(makro);
 
 delete makro;
-delete quiz;
