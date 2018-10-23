@@ -466,7 +466,7 @@ class QuizManagerView {
 	recursiveModuleDisplay(quizModule) {
 						var moduleName = document.createElement('span');
 						moduleName.className = 'moduleName-vertical-center';
-						moduleName.innerText = quizModule.Name  + ' (ID: ' + quizModule.ID + ')';
+						moduleName.innerText = quizModule.Name;
 
 						var realChechBox = document.createElement('span');
 						realChechBox.className = 'checkmark';
