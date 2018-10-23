@@ -102,3 +102,18 @@ describe('Question class', function() {
     });
   });
 });
+
+describe('Quiz class', function() {
+  describe('getRandomAnswer()', function() {
+    var question = new core.Question('How are You today?', [ 'bad', 'fine', 'good', ], [ 2 ]);
+    var answer = question.getRandomAnswer();
+  
+    it('should return an Answer object', function() {
+      assert.equal(true, answer instanceof core.Answer);
+    });
+  
+    it('should decrease StayedAnswers count by 1', function() {
+      assert.equal(2, question.StayedAnswers.length);
+    });
+  });
+});

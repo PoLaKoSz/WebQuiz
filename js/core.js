@@ -71,17 +71,76 @@ class Question {
 	}
 }
 
+class Module {
+	/**
+	 * @param {string} id 
+	 * @param {Module} definition This isn't a real Module object, but it will be in the constructor
+	 */
+	constructor(id, definition) {
+		this.ID = id
+		this.Name = definition.name;
+		this.IsChecked = false;
+		
+		this.Modules = [];
+		this.HasModules = false;
+		if ('modules' in definition) {
+			for (var i = 0; i < definition.modules.length; i++) {
+				var moduleID = this.ID + "-" + i;
+				this.Modules.push(new Module(moduleID, definition.modules[i]));
+			}
+			this.HasModules = true;
+		}
+
+		this.Questions = [];
+		this.HasQuestions = false;
+		if ('questions' in definition)
+		{
+			definition.questions.forEach(element => {
+				this.Questions.push(new Question(element.question, element.answers, element.correctIndexes));
+			});
+			this.HasQuestions = true;
+		}
+	}
+}
+
 class Quiz {
 	constructor(quiz) {
 		this.ID             = 0;
-		this.Name           = quiz.name;
-		this.Questions      = quiz.questions;
+		this.MainModule		= new Module(0, quiz);
+		this.Questions      = [];
 		this.RandomQuestion = null;
-		this.MaxCount       = this.Questions.length;
-		this.QuestionsCount = this.MaxCount;
+		this.MaxCount       = 0;
+		this.QuestionsCount = 0;
 		this.View 			= null;
 	}
 
+	/**
+	 * Fill up the Questions property from the active
+	 * submodules' questions
+	 */
+	setQuestions() {
+		this.readModule(this.MainModule);
+	}
+
+	/**
+	 * Read recursively the given {Module} submodules and fill up
+	 * the Questions array with {Question}s
+	 * 
+	 * @param {Module} quizModule 
+	 */
+	readModule(quizModule) {
+		if (quizModule.HasModules) {
+			for (var i = 0; i < quizModule.Modules.length; i++) {
+				this.readModule(quizModule.Modules[i]);
+			}
+		}
+		else if (quizModule.HasQuestions && quizModule.IsChecked) {
+			for (var i = 0; i < quizModule.Questions.length; i++) {
+				this.Questions.push(quizModule.Questions[i]);
+			}
+		}
+	}
+	
 	/**
 	 * @returns {Question}
 	 */
@@ -91,7 +150,7 @@ class Quiz {
 
 		this.removeIndex(questionIndex);
 
-		return new Question(question['question'], question['answers'], question['correctIndexes']);
+		return question;
 	}
 
 	/**
@@ -300,11 +359,22 @@ class QuizManager {
 		this.Quizzes.push(quiz);
 	}
 
-	/**
-	 * @param {Quiz} quiz 
-	 */
-	changeQuiz(quiz) {
-		this.ActiveQuiz = quiz;
+	startQuiz() {
+		this.ActiveQuiz = new Quiz({ 'name' : 'tmp'});
+		this.ActiveQuiz.View = new QuizView(this.View.Container);
+
+		var i = 0;
+		while (i < this.Quizzes.length && this.ActiveQuiz.Questions.length == 0) {
+			this.Quizzes[i].setQuestions();
+
+			this.ActiveQuiz.Questions = this.ActiveQuiz.Questions.concat(this.Quizzes[i].Questions);
+			
+			i++;
+		}
+
+		// fill up this.ActiveQuiz.Questions array
+		this.ActiveQuiz.MaxCount = this.ActiveQuiz.Questions.length;
+		this.ActiveQuiz.QuestionsCount = this.ActiveQuiz.MaxCount;
 
 		this.ActiveQuiz.View.setProgressBarMax(this.ActiveQuiz.MaxCount);
 
@@ -316,28 +386,51 @@ class QuizManager {
 	}
 
 	/**
-	 * @param {int} id 
-	 */
-	changeQuizByID(id) {
-		for (var i = 0; i < this.Quizzes.length; i++) {
-			var quiz = this.Quizzes[i];
-
-			if (id == quiz.ID) {
-				this.changeQuiz(quiz);
-				break;
-			}
-		}
-	}
-
-	/**
 	 * @param {Quiz} quiz 
 	 */
 	updateQuizName(quiz) {
-		this.View.updateQuizHeader(quiz.Name);
+		this.View.updateQuizHeader(quiz.MainModule.Name);
 	}
 
 	displayQuizSelector() {
 		this.View.showSelector(this.Quizzes);
+	}
+
+	/**
+	 * Handle when {Module}s gets selected/deselected on the UI
+	 * 
+	 * @param {string} id unique number for a specific Module
+	 */
+	moduleSelectionChangedWithID(id) {
+		var idArray = id.split('-');
+
+		var activeModule = this.Quizzes[idArray[0]].MainModule;
+
+		for (var i = 1; i < idArray.length; i++) {
+			activeModule = activeModule.Modules[idArray[i]];
+		}
+
+		var isChecked = document.getElementById(id).checked;
+
+		this.updateChildModules(activeModule, isChecked);
+
+		this.displayQuizSelector();
+	}
+
+	/**
+	 * Change recursively the children modules IsChecked property
+	 * 
+	 * @param {Module} quizModule current root module
+	 * @param {bool}   isChecked  new value
+	 */
+	updateChildModules(quizModule, isChecked) {
+		quizModule.IsChecked = isChecked;
+
+		if (quizModule.HasModules) {
+			for (var i = 0; i < quizModule.Modules.length; i++) {
+				this.updateChildModules(quizModule.Modules[i], isChecked);
+			}
+		}
 	}
 }
 
@@ -347,11 +440,65 @@ class QuizManagerView {
 	}
 
 	showSelector(quizzes) {
-		for (var i = 0; i < quizzes.length; i++) {
-			var quiz = quizzes[i];
+		this.Container.innerHTML = "";
 
-			this.Container.innerHTML += '<p><a href="#" onClick="selectQuizEvent(' + quiz.ID + ');">' + quiz.Name  + '</p>';
+		for (var i = 0; i < quizzes.length; i++) {
+			this.Container.appendChild(this.recursiveModuleDisplay(quizzes[i].MainModule));
 		}
+
+		var startButton = document.createElement("button");
+		startButton.innerHTML = 'Kvíz indítása';
+		startButton.setAttribute("onclick","quizzes.startQuiz();");
+
+		this.Container.appendChild(startButton);
+	}
+
+	/**
+	 * @returns {asdasd}
+	 */
+	recursiveModuleDisplay(quizModule) {
+						var moduleName = document.createElement('span');
+						moduleName.className = 'moduleName-vertical-center';
+						moduleName.innerText = quizModule.Name  + ' (ID: ' + quizModule.ID + ')';
+
+						var realChechBox = document.createElement('span');
+						realChechBox.className = 'checkmark';
+
+						var checkBox = document.createElement('input');
+						checkBox.type = 'checkbox';
+						checkBox.id = quizModule.ID;
+						checkBox.checked = quizModule.IsChecked;
+						checkBox.setAttribute('onclick','quizzes.moduleSelectionChangedWithID("' + quizModule.ID + '");');
+
+					var moduleCheckBoxContainerNode = document.createElement('label');
+					moduleCheckBoxContainerNode.className = 'moduleCheckBoxContainer';
+					moduleCheckBoxContainerNode.appendChild(checkBox);
+					moduleCheckBoxContainerNode.appendChild(realChechBox);
+					moduleCheckBoxContainerNode.appendChild(moduleName);
+
+				var moduleNameContainerNode = document.createElement('div');
+				moduleNameContainerNode.className = 'moduleName-container';
+				moduleNameContainerNode.appendChild(moduleCheckBoxContainerNode);
+
+				var moduleNameBgNode = document.createElement('div');
+				moduleNameBgNode.className = 'moduleName-bg';
+
+			var moduleHeightFixNode = document.createElement('div');
+			moduleHeightFixNode.className = 'moduleName-height-fix';
+			moduleHeightFixNode.appendChild(moduleNameBgNode);
+			moduleHeightFixNode.appendChild(moduleNameContainerNode);
+
+		var moduleNode = document.createElement('div');
+		moduleNode.className = 'module';
+		moduleNode.appendChild(moduleHeightFixNode);
+
+		if (quizModule.HasModules) {
+			for (var i = 0; i < quizModule.Modules.length; i++) {
+				moduleNode.appendChild(this.recursiveModuleDisplay(quizModule.Modules[i]));
+			}
+		}
+
+		return moduleNode;
 	}
 
 	updateQuizHeader(content) {
