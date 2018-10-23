@@ -354,7 +354,7 @@ class QuizManager {
 	addQuiz(quiz) {
 		quiz.View = new QuizView(this.View.Container);
 
-		quiz.ID = this.Quizzes.length;
+		quiz.MainModule.ID = this.Quizzes.length;
 
 		this.Quizzes.push(quiz);
 	}
