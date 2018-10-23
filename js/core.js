@@ -115,6 +115,33 @@ class Quiz {
 	}
 
 	/**
+	 * Fill up the Questions property from the active
+	 * submodules' questions
+	 */
+	setQuestions() {
+		this.readModule(this.MainModule);
+	}
+
+	/**
+	 * Read recursively the given {Module} submodules and fill up
+	 * the Questions array with {Question}s
+	 * 
+	 * @param {Module} quizModule 
+	 */
+	readModule(quizModule) {
+		if (quizModule.HasModules && quizModule.IsChecked) {
+			for (var i = 0; i < quizModule.Modules.length; i++) {
+				this.readModule(quizModule.Modules[i]);
+			}
+		}
+		else if (quizModule.HasQuestions && quizModule.IsChecked) {
+			for (var i = 0; i < quizModule.Questions.length; i++) {
+				this.Questions.push(quizModule.Questions[i]);
+			}
+		}
+	}
+	
+	/**
 	 * @returns {Question}
 	 */
 	getRandomQuestion() {
@@ -123,7 +150,7 @@ class Quiz {
 
 		this.removeIndex(questionIndex);
 
-		return new Question(question['question'], question['answers'], question['correctIndexes']);
+		return question;
 	}
 
 	/**
@@ -332,11 +359,15 @@ class QuizManager {
 		this.Quizzes.push(quiz);
 	}
 
-	/**
-	 * @param {Quiz} quiz 
-	 */
-	changeQuiz(quiz) {
-		this.ActiveQuiz = quiz;
+	startQuiz() {
+		this.ActiveQuiz = new Quiz({ 'name' : 'tmp'});
+		this.ActiveQuiz.View = new QuizView(this.View.Container);
+
+		var idx = 0;
+		while (idx < this.Quizzes.length && 0 < this.ActiveQuiz.Questions.length) {
+			this.ActiveQuiz.Questions = this.ActiveQuiz.Questions.concat(this.Quizzes[i].Questions);
+			idx++;
+		}
 
 		// fill up this.ActiveQuiz.Questions array
 		this.ActiveQuiz.MaxCount = this.ActiveQuiz.Questions.length;
@@ -349,20 +380,6 @@ class QuizManager {
 		this.ActiveQuiz.nextQuestion();
 
 		this.ActiveQuiz.View.show();
-	}
-
-	/**
-	 * @param {int} id 
-	 */
-	changeQuizByID(id) {
-		for (var i = 0; i < this.Quizzes.length; i++) {
-			var quiz = this.Quizzes[i];
-
-			if (id == quiz.ID) {
-				this.changeQuiz(quiz);
-				break;
-			}
-		}
 	}
 
 	/**
