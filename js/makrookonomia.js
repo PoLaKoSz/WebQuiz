@@ -1,6 +1,10 @@
 ﻿makro = {
     "name": "Makroökonómia",
-    "questions": [{
+    "modules": [
+    {
+        "name": "Összevont",
+        "questions": [
+        {
             "answers": [
                 "Összevont mutatók (pl. nemzeti jövedelem, foglalkoztatottság, infláció) segítségével a  gazdaság egészének teljesítményét, állapotát, fejlődési tendenciáit elemzi.",
                 "Az egymástól elkülönült piaci szereplők (emberek, háztartások, vállalatok) racionálisnak  feltételezett döntéseit vizsgálja.",
@@ -2927,8 +2931,10 @@
             ],
             "question": "Kormányzati kiadás ...",
         },
+        ]
+    }
     ]
-}
+};
 
 quiz = new Quiz(makro);
 
